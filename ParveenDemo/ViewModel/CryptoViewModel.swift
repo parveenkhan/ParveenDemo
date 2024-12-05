@@ -17,10 +17,8 @@ protocol CryptoListViewModelProtocol {
 }
 
 
-
-
 class CryptoViewModel: CryptoListViewModelProtocol  {
-    private var cryptoList: [Crypto] = []
+    var cryptoList: [Crypto] = []
     var filteredList: [Crypto] = []
     var onUpdate: (() -> Void)?
 

@@ -16,11 +16,18 @@ class ViewController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
+        setNeedsStatusBarAppearanceUpdate()
+        view.backgroundColor = AppColors.primary
+        
         setupUI()
         bindViewModel()
         viewModel.fetchCryptos()
         setupFilterActions()
     }
+    
+    override var preferredStatusBarStyle: UIStatusBarStyle {
+            return .lightContent // Change to .darkContent for dark text
+        }
 
     /// to setup the screen UI
     private func setupUI() {
@@ -41,9 +48,22 @@ class ViewController: UIViewController {
         bottomFilterView.translatesAutoresizingMaskIntoConstraints = false
         
         bottomFilterView.backgroundColor = .gray
+       // searchBar.backgroundColor = UIColor(red: 255.0/89.0, green: 255.0/13.0, blue: 255.0/228.0, alpha: 1.0)
         
         let textField = searchBar.searchTextField
         textField.delegate = self
+        textField.backgroundColor = AppColors.primary
+        searchBar.barTintColor = AppColors.primary
+        textField.borderStyle = .none
+        searchBar.tintColor = .white
+        searchBar.setIconColor(.white)
+        searchBar.setPlaceholderColor(.white)
+        
+        searchBar.searchTextField.backgroundColor = AppColors.primary
+        searchBar.searchTextField.textColor = .white
+        searchBar.tintColor = .white
+    
+        customSearchBarUI()
         
         NSLayoutConstraint.activate([
             
@@ -71,6 +91,30 @@ class ViewController: UIViewController {
         }
     }
       
+    private func customSearchBarUI() {
+        // Ensure cancel button is visible
+        searchBar.showsCancelButton = true
+        
+        // Customize cancel button color
+        if let cancelButton = searchBar.value(forKey: "cancelButton") as? UIButton {
+            cancelButton.setTitleColor(.white, for: .normal)
+        }
+        
+        // Access the search text field for further customizations
+        let textField: UITextField = searchBar.searchTextField
+        // Customize search text and placeholder
+        textField.textColor = .white
+        textField.attributedPlaceholder = NSAttributedString(
+            string: "Search here",
+            attributes: [NSAttributedString.Key.foregroundColor: UIColor.white]
+        )
+        textField.clearButtonMode = .never
+        
+        // Optionally customize search icon
+        if let searchIcon = textField.leftView as? UIImageView {
+            searchIcon.tintColor = .white // Set desired color
+        }
+    }
     
     /// to add target on button action
     private func setupFilterActions() {
