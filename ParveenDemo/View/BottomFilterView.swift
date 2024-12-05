@@ -34,7 +34,8 @@ class BottomFilterView: UIView {
         buttons = [activeCoinsButton, inactiveCoinsButton, onlyTokensButton, onlyCoinsButton, newCoinsButton]
         let actionTitles = CryptoConstants.actionTitles
         
-        var configuration = UIButton.Configuration.plain()
+        var configuration = UIButton.Configuration.filled()
+        configuration.cornerStyle = .capsule
         configuration.baseBackgroundColor = .white
         configuration.baseForegroundColor = .black
         
@@ -44,12 +45,13 @@ class BottomFilterView: UIView {
         
         for (i, button) in buttons.enumerated() {
             button.setTitle(actionTitles[i], for: .normal)
-            button.backgroundColor = .white
-            button.layer.masksToBounds = true
+            button.backgroundColor = .clear
+           // button.layer.masksToBounds = true
+            button.clipsToBounds = true
             button.translatesAutoresizingMaskIntoConstraints = false
             button.addTarget(self, action: #selector(toggleSelection(_:)), for: .touchUpInside)
             button.configuration = configuration
-            button.layer.cornerRadius = button.frame.size.height / 2
+           // button.layer.cornerRadius = button.frame.size.height / 2
             button.tag = i
 
         }
@@ -93,22 +95,12 @@ class BottomFilterView: UIView {
         stackView.layoutIfNeeded()
     }
     
-    override func layoutSubviews() {
-        super.layoutSubviews()
-        
-        for button in buttons {
-            button.layer.cornerRadius = button.frame.height / 2
-            button.layer.masksToBounds = true
-        }
-    }
-    
-    
     /// to remove all filters
     func removeAllFilters() {
         for button in buttons {
             button.isSelected = false
             button.configuration?.image = nil
-            button.backgroundColor = .white
+            button.backgroundColor = .clear
         }
     }
     
@@ -133,25 +125,21 @@ class BottomFilterView: UIView {
             sender.isSelected.toggle()
             inactiveCoinsButton.isSelected = false
             inactiveCoinsButton.configuration?.image = nil
-            inactiveCoinsButton.backgroundColor = .white
         //Inactive coins
         case 1:
             sender.isSelected.toggle()
             activeCoinsButton.isSelected = false
             activeCoinsButton.configuration?.image = nil
-            activeCoinsButton.backgroundColor = .white
         //only token
         case 2:
             sender.isSelected.toggle()
             onlyCoinsButton.isSelected = false
             onlyCoinsButton.configuration?.image = nil
-            onlyCoinsButton.backgroundColor = .white
         //Only coins
         case 3:
             sender.isSelected.toggle()
             onlyTokensButton.isSelected = false
             onlyTokensButton.configuration?.image = nil
-            onlyTokensButton.backgroundColor = .white
        //4 - New coins
         default:
             sender.isSelected.toggle()
@@ -159,11 +147,11 @@ class BottomFilterView: UIView {
         
         if sender.isSelected {
              sender.configuration?.image = UIImage(systemName: "checkmark")
-             sender.backgroundColor = UIColor(red: 209.0/255.0, green: 209.0/255.0, blue: 209.0/255.0, alpha: 1.0)
+            sender.configuration?.baseBackgroundColor = AppColors.actionButtonBackgroundColor
 
         } else {
             sender.configuration?.image = nil
-            sender.backgroundColor = .white
+            sender.configuration?.baseBackgroundColor = .white
 
         }
         
