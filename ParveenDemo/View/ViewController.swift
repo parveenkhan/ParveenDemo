@@ -97,7 +97,7 @@ class ViewController: UIViewController {
         
         // Customize cancel button color
         if let cancelButton = searchBar.value(forKey: "cancelButton") as? UIButton {
-            cancelButton.setTitleColor(.white, for: .normal)
+            cancelButton.setTitleColor(.gray, for: .normal)
         }
         
         // Access the search text field for further customizations
