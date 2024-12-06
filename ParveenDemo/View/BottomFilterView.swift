@@ -91,14 +91,14 @@ class BottomFilterView: UIView {
         let button = UIButton(type: .custom)
         button.setTitle(title, for: .normal)
         button.titleLabel?.font = UIFont.systemFont(ofSize: 16, weight: .medium)
-        button.setTitleColor(.black, for: .normal) // Text color is black in all states
-        button.backgroundColor = .white // Background is white
+        button.setTitleColor(.black, for: .normal)
+        button.backgroundColor = .white
         button.layer.cornerRadius = 20
-        button.layer.masksToBounds = true // Prevent overflow of content
+        button.layer.masksToBounds = true
         button.tag = tag
-        button.setImage(nil, for: .normal) // No image initially
+        button.setImage(nil, for: .normal)
         button.contentHorizontalAlignment = .center
-        button.contentEdgeInsets = UIEdgeInsets(top: 8, left: 8, bottom: 8, right: 8)
+        button.configuration?.contentInsets = NSDirectionalEdgeInsets(top: 8, leading: 8, bottom: 8, trailing: 8)
         button.addTarget(self, action: #selector(toggleSelection(_:)), for: .touchUpInside)
         button.isSelected = false // Default unselected state
         
@@ -107,7 +107,7 @@ class BottomFilterView: UIView {
         button.setBackgroundImage(UIImage(ciImage: .white), for: .highlighted)
         button.setBackgroundImage(UIImage(ciImage: .white), for: .selected)
         
-        button.heightAnchor.constraint(equalToConstant: 40).isActive = true // Consistent height
+        button.heightAnchor.constraint(equalToConstant: 40).isActive = true
         updateButtonAppearance(button)
         return button
     }
@@ -116,14 +116,14 @@ class BottomFilterView: UIView {
         if button.isSelected {
             button.setImage(UIImage(systemName: "checkmark"), for: .normal) // Add checkmark image
             button.imageView?.tintColor = .black // Image color is black
-            button.imageEdgeInsets = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 10) // Spacing between text and image
-            button.backgroundColor = AppColors.actionButtonBackgroundColor // Background remains white
+            button.configuration?.contentInsets = NSDirectionalEdgeInsets(top: 0, leading: 0, bottom: 0, trailing: 10)
+            button.backgroundColor = AppColors.actionButtonBackgroundColor
         } else {
-            button.setImage(nil, for: .normal) // Remove image when unselected
-            button.backgroundColor = .white // Background remains white
+            button.setImage(nil, for: .normal)
+            button.backgroundColor = .white
 
         }
-        button.setTitleColor(.black, for: .normal) // Text color remains black
+        button.setTitleColor(.black, for: .normal)
     }
     
     
@@ -149,41 +149,32 @@ class BottomFilterView: UIView {
     
     
     @objc func toggleSelection(_ sender: UIButton) {
-        // sender.isSelected.toggle() // Toggle the selection state
-        // updateButtonAppearance(sender)
+        sender.isSelected.toggle()
+        updateButtonAppearance(sender)
+
         switch(sender.tag) {
             //Active Coins
         case 0:
-            sender.isSelected.toggle()
-            updateButtonAppearance(sender)
             inactiveCoinsButton.isSelected = false
             updateButtonAppearance(inactiveCoinsButton)
             // inactiveCoinsButton.configuration?.image = nil
             //Inactive coins
         case 1:
-            sender.isSelected.toggle()
-            updateButtonAppearance(sender)
             activeCoinsButton.isSelected = false
             updateButtonAppearance(activeCoinsButton)
-            
+            //Only token
         case 2:
-            sender.isSelected.toggle()
-            updateButtonAppearance(sender)
             onlyCoinsButton.isSelected = false
             updateButtonAppearance(onlyCoinsButton)
             
             //Only coins
         case 3:
-            sender.isSelected.toggle()
-            updateButtonAppearance(sender)
-            
             onlyTokensButton.isSelected = false
             updateButtonAppearance(onlyTokensButton)
             
             //4 - New coins
         default:
-            sender.isSelected.toggle()
-            updateButtonAppearance(sender)
+            break
         }
         
     }
