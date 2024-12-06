@@ -13,3 +13,5 @@ Right now bottom filter I have added buttons in stackview to update with dynamic
 Can customised more search bar
 Can add more unit and UI testcases.
 Not implemented any loader/Activity indicator (future schope- can be implememented while data fetching).
+
+Note - updated code is develop branch with updated filter button UI
