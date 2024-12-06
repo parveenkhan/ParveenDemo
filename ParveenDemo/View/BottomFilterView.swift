@@ -45,16 +45,20 @@ class BottomFilterView: UIView {
         mainStackView.translatesAutoresizingMaskIntoConstraints = false
         
         // Configure Row StackViews
-        configureRowStackView(row1StackView)
-        configureRowStackView(row2StackView)
+        configureRowStackView1(row1StackView)
+        configureRowStackView2(row2StackView)
         
         // Add Buttons to Rows
         row1StackView.addArrangedSubview(activeCoinsButton)
         row1StackView.addArrangedSubview(inactiveCoinsButton)
         row1StackView.addArrangedSubview(onlyCoinsButton)
         
+        let spacerView = UIView()
+        spacerView.translatesAutoresizingMaskIntoConstraints = false
+        
         row2StackView.addArrangedSubview(newCoinsButton)
         row2StackView.addArrangedSubview(onlyTokensButton)
+        row2StackView.addArrangedSubview(spacerView)
         
         // Add Rows to Main StackView
         mainStackView.addArrangedSubview(row1StackView)
@@ -65,11 +69,18 @@ class BottomFilterView: UIView {
             mainStackView.topAnchor.constraint(equalTo: topAnchor, constant: 10),
             mainStackView.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 10),
             mainStackView.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -10),
-            mainStackView.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -10)
+            mainStackView.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -30)
         ])
     }
     
-    private func configureRowStackView(_ stackView: UIStackView) {
+    private func configureRowStackView1(_ stackView: UIStackView) {
+        stackView.axis = .horizontal
+        stackView.spacing = 10
+        stackView.distribution = .fillEqually
+        stackView.translatesAutoresizingMaskIntoConstraints = false
+    }
+    
+    private func configureRowStackView2(_ stackView: UIStackView) {
         stackView.axis = .horizontal
         stackView.spacing = 10
         stackView.distribution = .fillEqually
@@ -88,7 +99,6 @@ class BottomFilterView: UIView {
         button.setImage(nil, for: .normal) // No image initially
         button.contentHorizontalAlignment = .center
         button.contentEdgeInsets = UIEdgeInsets(top: 8, left: 8, bottom: 8, right: 8)
-        //  button.addTarget(self, action: #selector(filterButtonTapped), for: .touchUpInside)
         button.addTarget(self, action: #selector(toggleSelection(_:)), for: .touchUpInside)
         button.isSelected = false // Default unselected state
         
@@ -107,19 +117,15 @@ class BottomFilterView: UIView {
             button.setImage(UIImage(systemName: "checkmark"), for: .normal) // Add checkmark image
             button.imageView?.tintColor = .black // Image color is black
             button.imageEdgeInsets = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 10) // Spacing between text and image
+            button.backgroundColor = AppColors.actionButtonBackgroundColor // Background remains white
         } else {
             button.setImage(nil, for: .normal) // Remove image when unselected
+            button.backgroundColor = .white // Background remains white
+
         }
         button.setTitleColor(.black, for: .normal) // Text color remains black
-        button.backgroundColor = .white // Background remains white
     }
     
-    // Action Handlers
-    @objc private func filterButtonTapped(_ sender: UIButton) {
-        sender.isSelected.toggle() // Toggle the selection state
-        updateButtonAppearance(sender)
-        print("\(sender.titleLabel?.text ?? "") Filter \(sender.isSelected ? "Selected" : "Unselected")")
-    }
     
     /// to remove all filters
     func removeAllFilters() {
